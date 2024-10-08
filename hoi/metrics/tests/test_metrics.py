@@ -14,7 +14,7 @@ from hoi.metrics import (
     SynergyMMI,
     RSI,
     RedundancyphiID,
-    SynergyphiID,
+    psi_syn,
 )
 from hoi.utils import get_nbest_mult
 
@@ -29,7 +29,7 @@ N_FEATURES_Y = 3
 N_VARIABLES = 5
 
 # metrics settings
-METRICS_NET = [Oinfo, InfoTopo, TC, DTC, Sinfo, RedundancyphiID, SynergyphiID]
+METRICS_NET = [Oinfo, InfoTopo, TC, DTC, Sinfo, RedundancyphiID, psi_syn]
 METRICS_ENC = [RedundancyMMI, SynergyMMI, GradientOinfo, RSI, InfoTot]
 METRICS_ALL = METRICS_NET + METRICS_ENC
 
@@ -93,7 +93,7 @@ class TestMetricsSmoke(object):
             return None
 
         # skip phiid when there's a target
-        if (y is not None) and (metric in [RedundancyphiID, SynergyphiID]):
+        if (y is not None) and (metric in [RedundancyphiID, psi_syn]):
             return None
 
         # skip infotopo if multiplets or y
@@ -101,7 +101,7 @@ class TestMetricsSmoke(object):
             kw_def = dict()
             if (y is not None) or (multiplets is not None):
                 return None
-        elif metric in [RedundancyphiID, SynergyphiID]:
+        elif metric in [RedundancyphiID, psi_syn]:
             kw_def = dict(multiplets=multiplets)
         else:
             kw_def = dict(y=y, multiplets=multiplets)
@@ -168,7 +168,7 @@ class TestMetricsSmoke(object):
         # ------------------------------ BEHAVIOR -----------------------------
         if metric in METRICS_NET:
             # special case of InfoTopo
-            if metric in [InfoTopo, RedundancyphiID, SynergyphiID]:
+            if metric in [InfoTopo, RedundancyphiID, psi_syn]:
                 model = metric(x.copy())
                 model.fit(minsize=2, maxsize=5)
                 np.testing.assert_array_equal(model.order.min(), 2)
@@ -323,7 +323,7 @@ class TestMetricsFunc(object):
         np.testing.assert_array_equal(df["multiplet"].values[0], [3, 4])
 
     @pytest.mark.parametrize("xy", [(x_phiid, None)])
-    @pytest.mark.parametrize("metric", [RedundancyphiID, SynergyphiID])
+    @pytest.mark.parametrize("metric", [RedundancyphiID, psi_syn])
     def test_phiid(self, metric, xy):
         x, y = xy
         model = metric(x.copy())
@@ -331,7 +331,7 @@ class TestMetricsFunc(object):
 
         df = get_nbest_mult(hoi, model=model, minsize=2, maxsize=2, n_best=1)
 
-        if metric == SynergyphiID:
+        if metric == psi_syn:
             mult = [0, 1]
         elif metric == RedundancyphiID:
             mult = [0, 2]

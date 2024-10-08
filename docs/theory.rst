@@ -35,7 +35,7 @@ mechanistic interactions :cite:`rosas2022disentangling`.
 
 Most of the information metrics implemented are based on 
 the concepts of :term:`Synergy` and :term:`Redundancy`, formalized in terms of IT by 
-the :term:`Partial Information Decomposition` (PID) framework :cite:`williams2010nonnegative`. 
+the :term:`Partial Information Decomposition` (PID) framework :cite:`williams2010nonnegative`.
 Even though these metrics are theoretically well defined, when concretely using 
 them to study and computing the higher-order structure of a system, two main problems come into 
 play: how to estimate entropies and information from limited data set, with different 
@@ -269,12 +269,27 @@ when it is negative, synergy.
 
 .. minigallery:: hoi.metrics.InfoTopo
 
-Synergy and redundancy integrated Information Decomposition (MMI)
-----------------------------------------------------------------
+Integrated Information Decomposition (MMI)
+------------------------------------------
 
-Recently it has been drawn a lot of attention by different metrics focusing 
-on decomposing the information that two variables carry about their own 
-future :cite:`mediano2021towards`. 
+The toolbox include different metrics to study the integration of information. 
+One of this metrics is :math:`\psi`, that measure the synergy that a set of 
+variables carry about their own future,  :class:`hoi.metrics.psi_syn`. 
+Within the approximation of Minimum 
+Mutual Information (MMI), it can be computed in the following way:
+
+.. math::
+
+        Syn(X,Y) =  I(X_{t-\tau},Y_{t-\tau};X_{t},Y_t) -
+                    max \{ I(X_{t-\tau};X_t,Y_t),
+                    I(Y_{t-\tau};X_t,Y_t) \}
+
+.. minigallery:: hoi.metrics.psi_syn
+
+Recently, it has been drawn a lot of attention by a new, fine-grained 
+decomposition of the information that two variables carry about their own 
+future :cite:`mediano2021towards`. In this decomposition there are 16 different atoms 
+that can be linked to different functions and kind of information dynamics :cite:`mediano2021towards, luppi2024information`. 
 In particular, the synergy that is carried by two variables about their 
 joint future, has been associated with the concept of emergence and 
 integration of information :cite:`mediano2022greater, rosas2020reconciling, luppi2024information`.
@@ -285,11 +300,11 @@ less vulnerable by the lost of elements  :cite:`luppi2024information`.
 It provides already many results in simulated complex systems or in different 
 studies within the field of 
 neuroscience :cite:`rosas2020reconciling, luppi2020synergistic, luppi2020synergistic`. 
-These functions allow to compute redundancy 
-and synergy using the approximation of 
-Minimum Mutual Information (MMI) :cite:`barrett2015exploration`, 
-in which the redundancy, :class:`hoi.metrics.RedundancyphiID`, between a couple 
-of variables :math:`(X, Y)` is 
+In this decomposition, it is necessary to approximate the redundancy between 
+two variables and in HOI to do so we used the MMI :cite:`barrett2015exploration`. 
+The redundancy can be computed with the function, :class:`hoi.metrics.RedundancyphiID`, 
+between a couple 
+of variables :math:`(X, Y)`, usign the MMI, is 
 defined as: 
 
 .. math::
@@ -299,23 +314,28 @@ defined as:
 
 .. minigallery:: hoi.metrics.RedundancyphiID
 
-Within the MMI approximation the computation of the synergy, :class:`hoi.metrics.SynergyphiID`, 
-reduces to the
-following formula: 
+All the 16 atoms of the integrated information decomposition can be computed by solving
+a linear systems, this in HOI can be done using the function, :class:`hoi.metrics.atoms_phiID`
 
-.. math::
+.. minigallery:: hoi.metrics.atoms_phiID
 
-    Syn(X,Y) =  I(X_{t-\tau},Y_{t-\tau};X_{t},Y_t) -
-                        max \{ I(X_{t-\tau};X_t,Y_t),
-                        I(Y_{t-\tau};X_t,Y_t) \}
-
-These two metrics are always positive and have as upper bound the value of temporal delayed
+These metrics are always positive and have as upper bound the value of temporal delayed
 mutual information (TDMI), :math:`I(X(t-\tau),Y(t-\tau);X(t),Y(t))`.
-
-.. minigallery:: hoi.metrics.SynergyphiID
 
 Network encoding 
 ****************
+
+The metrics that are contained in this section quantify statistical effects 
+among a group of variable that are related to a target variable of interest. 
+These information-theoretic measures, such as the redundancy-synergy index 
+(RSI) and the gradient O-information, are useful for studying the collective 
+behavior of three or more components of a complex system, . 
+
+Once data is gathered 
+from the activity of this components, these measures can be applied to unveil 
+new insights about the functional interactions of those components. In this section, we 
+list all the metrics of this kind that are implemented in the toolbox, providing a 
+concise explanation and relevant references. 
 
 Gradient of O-information
 -------------------------

@@ -8,7 +8,7 @@ defined in the Integrated Information Decomposition framework
 
 import numpy as np
 
-from hoi.metrics import SynergyphiID, RedundancyphiID
+from hoi.metrics import psi_syn, RedundancyphiID
 from hoi.utils import get_nbest_mult
 
 import matplotlib.pyplot as plt
@@ -20,9 +20,8 @@ plt.style.use("ggplot")
 # Definition
 # ----------
 #
-# The synergy as defined in the Integrated Information decomposition framework
-# is a pairwise measure of the synergistic information that two variables
-# carry about their own future. For a couple of varible,
+# :math:`\psi` is a pairwise measure of the Integrated information. 
+# For a couple of varibles,
 # :math:`X` and  :math:`Y`, when using the minimum mutual information (MMI)
 # approximation for the redundancy, it is defined in the following way:
 
@@ -35,8 +34,8 @@ plt.style.use("ggplot")
 # the couple of variables under study. It measures how much we can predict the
 # future state of the couple of variables when considering them as a whole with
 # respect to when considering them separately.
-# Redundancy instead, following the MMI framework approximation is computed in
-# the following way:
+# in the phiID framework, redundancy instead, following the MMI framework 
+# approximation is computed in the following way:
 
 # %%
 # .. math::
@@ -49,7 +48,7 @@ plt.style.use("ggplot")
 
 ###############################################################################
 # Simulate synergy
-# ------------------
+# -----------------
 #
 # A very simple way to simulate synergy is by to start with two independent
 # variables and inflate autocorrelation by
@@ -68,7 +67,7 @@ for i in range(190):
     x[i, 1] = np.sum(x[i : i + 20, 0]) + 0.2 * np.sum(x[i : i + 20, 1])
 
 # define the SynergyphiID model and launch it
-model = SynergyphiID(x)
+model = psi_syn(x)
 hoi = model.fit(minsize=2, maxsize=2)
 
 # now we can take a look at the multiplets with the highest and lowest values
@@ -134,7 +133,7 @@ x[:, 2] = x[:, 0] + np.random.rand(200) * 0.05
 # define the Synergy_phiID, launch it and inspect the best couples of
 # variables
 
-model = SynergyphiID(x)
+model = psi_syn(x)
 syn_results = model.fit(minsize=2, maxsize=2)
 df = get_nbest_mult(hoi, model=model, minsize=2, maxsize=2, n_best=3)
 print(df)

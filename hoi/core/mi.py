@@ -86,6 +86,13 @@ def compute_mi_comb(inputs, comb, mi=None):
 
 
 @partial(jax.jit, static_argnums=(2))
+def compute_mi_comb_b(inputs, comb, mi=None):
+    x, y = inputs
+    y_c = y[:, comb, :]
+    return inputs, mi(x, y_c)
+
+
+@partial(jax.jit, static_argnums=(2))
 def compute_mi_comb_phi(inputs, comb, mi=None):
     x, y = inputs
     x_c = jnp.atleast_2d(x[:, comb[0], :])
@@ -225,6 +232,10 @@ def mi_gauss(x: jnp.array, y: jnp.array):
     i : float
         Information shared by x and y (in bits)
     """
+
+    x -= x.mean()
+    y -= y.mean()
+
     return mi_gc(x, y, biascorrect=False, copnorm=False)
 
 

@@ -3,7 +3,8 @@ from .gradient_oinfo import GradientOinfo  # noqa
 from .infotopo import InfoTopo  # noqa
 from .info_tot import InfoTot  # noqa
 from .oinfo import Oinfo  # noqa
-from .phiid_syn import SynergyphiID  # noqa
+from .phiid_atoms import atoms_phiID  # noqa
+from .psi_syn import psi_syn  # noqa
 from .phiid_red import RedundancyphiID  # noqa
 from .red_mmi import RedundancyMMI  # noqa
 from .rsi import RSI  # noqa

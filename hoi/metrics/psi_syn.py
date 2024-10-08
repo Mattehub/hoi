@@ -28,7 +28,7 @@ def _compute_phi_syn(inputs, comb, mi_fcn=None):
     return inputs, i_tot - i_maxj.max(0)
 
 
-class SynergyphiID(HOIEstimator):
+class psi_syn(HOIEstimator):
     r"""Synergy (phiID).
 
     For each couple of variable the synergy about their future as in
