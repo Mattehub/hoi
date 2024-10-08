@@ -281,7 +281,7 @@ Mutual Information (MMI), it can be computed in the following way:
 
 .. math::
 
-        Syn(X,Y) =  I(X_{t-\tau},Y_{t-\tau};X_{t},Y_t) -
+        \psi(X, Y) = Syn(X,Y) =  I(X_{t-\tau},Y_{t-\tau};X_{t},Y_t) -
                     max \{ I(X_{t-\tau};X_t,Y_t),
                     I(Y_{t-\tau};X_t,Y_t) \}
 
