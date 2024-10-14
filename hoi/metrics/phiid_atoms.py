@@ -11,7 +11,7 @@ from hoi.core.mi import get_mi, compute_mi_comb, compute_mi_comb_phi
 from hoi.utils.progressbar import get_pbar
 
 
-@partial(jax.jit, static_argnums=(2, 3, 4))
+@partial(jax.jit, static_argnums=(1, 2, 3))
 def compute_phiid_atoms(inputs, comb, mi_fcn_r=None, mi_fcn=None):
     x, y, ind, ind_red, atom = inputs
 
