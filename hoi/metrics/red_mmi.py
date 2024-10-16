@@ -35,11 +35,7 @@ class RedundancyMMI(HOIEstimator):
 
     def __init__(self, x, y, multiplets=None, verbose=None):
         HOIEstimator.__init__(
-            self,
-            x=x,
-            y=y,
-            multiplets=multiplets,
-            verbose=verbose,
+            self, x=x, y=y, multiplets=multiplets, verbose=verbose,
         )
 
     def fit(

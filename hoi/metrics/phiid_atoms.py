@@ -11,7 +11,7 @@ from hoi.core.mi import get_mi, compute_mi_comb, compute_mi_comb_phi
 from hoi.utils.progressbar import get_pbar
 
 
-@partial(jax.jit, static_argnums=(1, 2, 3))
+@partial(jax.jit, static_argnums=(2, 3))
 def compute_phiid_atoms(inputs, comb, mi_fcn_r=None, mi_fcn=None):
     x, y, ind, ind_red, atom = inputs
 
@@ -72,26 +72,28 @@ def compute_phiid_atoms(inputs, comb, mi_fcn_r=None, mi_fcn=None):
     )
     b = jnp.concatenate(
         (
-            rtr[jnp.newaxis, :],
-            r01tx[jnp.newaxis, :],
-            r01ty[jnp.newaxis, :],
-            r01txy[jnp.newaxis, :],
-            rxyt0[jnp.newaxis, :],
-            rxyt1[jnp.newaxis, :],
-            rxyt01[jnp.newaxis, :],
-            I0tx[jnp.newaxis, :],
-            I0ty[jnp.newaxis, :],
-            I1tx[jnp.newaxis, :],
-            I1ty[jnp.newaxis, :],
-            I01tx[jnp.newaxis, :],
-            I01ty[jnp.newaxis, :],
-            Ixyt0[jnp.newaxis, :],
-            Ixyt1[jnp.newaxis, :],
-            I01txy[jnp.newaxis, :],
+            rtr[:, jnp.newaxis],
+            r01tx[:, jnp.newaxis],
+            r01ty[:, jnp.newaxis],
+            r01txy[:, jnp.newaxis],
+            rxyt0[:, jnp.newaxis],
+            rxyt1[:, jnp.newaxis],
+            rxyt01[:, jnp.newaxis],
+            I0tx[:, jnp.newaxis],
+            I0ty[:, jnp.newaxis],
+            I1tx[:, jnp.newaxis],
+            I1ty[:, jnp.newaxis],
+            I01tx[:, jnp.newaxis],
+            I01ty[:, jnp.newaxis],
+            Ixyt0[:, jnp.newaxis],
+            Ixyt1[:, jnp.newaxis],
+            I01txy[:, jnp.newaxis],
         ),
         axis=1,
     )
 
+    print(knowns_to_atoms_mat_multd.shape)
+    print(b.shape)
     out = jnp.linalg.solve(knowns_to_atoms_mat_multd, b)
 
     return inputs, out[:, atom]

@@ -250,7 +250,7 @@ def mi_gauss(x: jnp.array, y: jnp.array):
 def _cdist(x, y) -> jnp.ndarray:
     """Pairwise squared distances between all samples of x and y."""
     diff = x.T[:, None, :] - y.T[None]
-    _dist = jnp.sum(diff**2, axis=-1)
+    _dist = jnp.sum(diff ** 2, axis=-1)
     return _dist
 
 

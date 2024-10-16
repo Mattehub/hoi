@@ -373,12 +373,12 @@ def entropy_knn(x, k: int = 3) -> jnp.array:
     # compute euclidian distance
     x = x.T[None]
     diff = x.transpose(1, 0, 2) - x
-    eucl_xi = jnp.sqrt(jnp.sum(diff**2, axis=-1))
+    eucl_xi = jnp.sqrt(jnp.sum(diff ** 2, axis=-1))
     # dist to kth neighbor
     dist_k = jnp.sort(eucl_xi, axis=-1)[:, k]
 
     # volume of unit ball in d^n
-    c_d = (jnp.pi ** (d * 0.5)) / gamma(1.0 + d * 0.5) / (2**d)
+    c_d = (jnp.pi ** (d * 0.5)) / gamma(1.0 + d * 0.5) / (2 ** d)
     log_c_d = jnp.log(c_d)
 
     # sum log of distances

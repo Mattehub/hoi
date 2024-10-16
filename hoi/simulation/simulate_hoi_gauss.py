@@ -8,9 +8,7 @@ import numpy as np
 
 
 def simulate_hoi_gauss(
-    n_samples=1000,
-    target=False,
-    triplet_character="synergy",
+    n_samples=1000, target=False, triplet_character="synergy",
 ):
     """Simulates High Order Interactions (HOIs) with or without target.
 
@@ -141,7 +139,7 @@ def __cov_order_3(character):
         theta_yz = 0.22
 
         # Noise covariances theta
-        theta = np.diagflat(1 - m**2)
+        theta = np.diagflat(1 - m ** 2)
         theta += np.diagflat([0, theta_yz], 1) + np.diagflat([0, theta_yz], -1)
 
         # The covariance matrix for the three variables
@@ -152,7 +150,7 @@ def __cov_order_3(character):
         theta_yz = -0.39
 
         # Noise covariances theta
-        theta = np.diagflat(1 - m**2)
+        theta = np.diagflat(1 - m ** 2)
         theta += np.diagflat([0, theta_yz], 1) + np.diagflat([0, theta_yz], -1)
 
         # The covariance matrix for the three variables
@@ -188,7 +186,7 @@ def __cov_order_4(character):
     m = np.array([lambx, lamby, lambz, lambs])[np.newaxis]
 
     # Initialize the noise covariance matrix theta
-    theta = np.diagflat(1 - m**2)
+    theta = np.diagflat(1 - m ** 2)
 
     if character == "redundancy":
         # We fix theta_zs in such a way that the variables are redundant
