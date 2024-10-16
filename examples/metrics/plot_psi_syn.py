@@ -8,7 +8,7 @@ defined in the Integrated Information Decomposition framework
 
 import numpy as np
 
-from hoi.metrics import psi_syn, RedundancyphiID
+from hoi.metrics import psi_synergy, RedundancyphiID
 from hoi.utils import get_nbest_mult
 
 import matplotlib.pyplot as plt
@@ -67,7 +67,7 @@ for i in range(190):
     x[i, 1] = np.sum(x[i : i + 20, 0]) + 0.2 * np.sum(x[i : i + 20, 1])
 
 # define the SynergyphiID model and launch it
-model = psi_syn(x)
+model = psi_synergy(x)
 hoi = model.fit(minsize=2, maxsize=2)
 
 # now we can take a look at the multiplets with the highest and lowest values
@@ -133,7 +133,7 @@ x[:, 2] = x[:, 0] + np.random.rand(200) * 0.05
 # define the Synergy_phiID, launch it and inspect the best couples of
 # variables
 
-model = psi_syn(x)
+model = psi_synergy(x)
 syn_results = model.fit(minsize=2, maxsize=2)
 df = get_nbest_mult(hoi, model=model, minsize=2, maxsize=2, n_best=3)
 print(df)
