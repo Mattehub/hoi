@@ -275,7 +275,7 @@ Integrated Information Decomposition (MMI)
 
 The toolbox include different metrics to study the integration of information. 
 One of this metrics is :math:`\psi`, that measure the synergy that a set of 
-variables carry about their own future,  :class:`hoi.metrics.psi_syn`. 
+variables carry about their own future,  :class:`hoi.metrics.psi_synergy`. 
 Within the approximation of Minimum 
 Mutual Information (MMI), it can be computed in the following way:
 
@@ -285,7 +285,7 @@ Mutual Information (MMI), it can be computed in the following way:
                     max \{ I(X_{t-\tau};X_t,Y_t),
                     I(Y_{t-\tau};X_t,Y_t) \}
 
-.. minigallery:: hoi.metrics.psi_syn
+.. minigallery:: hoi.metrics.psi_synergy
 
 Recently it has been drawn a lot of attention by different metrics focusing 
 on decomposing the information that two variables carry about their own 
