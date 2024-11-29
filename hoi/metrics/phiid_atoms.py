@@ -70,6 +70,7 @@ def compute_phiid_atoms(inputs, comb, mi_fcn_r=None, mi_fcn=None):
     knowns_to_atoms_mat_multd = jnp.tile(
         knowns_to_atoms_mat[jnp.newaxis, :, :], (n_var, 1, 1)
     )
+
     b = jnp.concatenate(
         (
             rtr[:, jnp.newaxis],
@@ -92,11 +93,14 @@ def compute_phiid_atoms(inputs, comb, mi_fcn_r=None, mi_fcn=None):
         axis=1,
     )
 
-    print(knowns_to_atoms_mat_multd.shape)
-    print(b.shape)
-    out = jnp.linalg.solve(knowns_to_atoms_mat_multd, b)
+    out_ = jnp.linalg.solve(knowns_to_atoms_mat_multd, b[..., None])[..., 0]
 
-    return inputs, out[:, atom]
+    out = jnp.zeros(len(out_[:, 0]))
+
+    for i in atom:
+        out += out_[:, i]
+
+    return inputs, out
 
 
 class atoms_phiID(HOIEstimator):
@@ -139,7 +143,8 @@ class atoms_phiID(HOIEstimator):
         maxsize=None,
         method="gc",
         samples=None,
-        atom=15,
+        atoms=["sts"],
+        matrix=False,
         **kwargs,
     ):
         r"""Integrated Information Decomposition (phiID).
@@ -187,12 +192,37 @@ class atoms_phiID(HOIEstimator):
             The NumPy array containing values of higher-rder interactions of
             shape (n_multiplets, n_variables)
         """
+        # ____________________________ atoms __________________________________
+
+        dic = {
+            "rtr": 0,
+            "rtu1": 1,
+            "rtu2": 2,
+            "rts": 3,
+            "u1tr": 4,
+            "u2tr": 8,
+            "str": 12,
+            "u1tu1": 5,
+            "u1tu2": 6,
+            "u2tu1": 9,
+            "u2tu2": 10,
+            "stu1": 14,
+            "stu2": 1,
+            "u1ts": 7,
+            "u2ts": 11,
+            "sts": 15,
+        }
+
+        atom = jnp.array([dic[i] for i in atoms])
+
         # ________________________________ I/O ________________________________
         # check minsize and maxsize
         minsize, maxsize = self._check_minmax(max(minsize, 2), maxsize)
 
         # prepare the x for computing mi
         x, kwargs = prepare_for_it(self._x, method, samples=samples, **kwargs)
+
+        n_var, n_f, n_sam = x.shape
 
         # prepare mi functions
         mi_fcn = jax.vmap(get_mi(method=method, **kwargs))
@@ -213,6 +243,7 @@ class atoms_phiID(HOIEstimator):
         # _______________________________ HOI _________________________________
 
         offset = 0
+
         if direction_axis == 2:
             hoi = jnp.zeros(
                 (len(order), self.n_variables - tau), dtype=jnp.float32
@@ -245,6 +276,7 @@ class atoms_phiID(HOIEstimator):
             else:
                 raise ValueError("axis can be eaither equal 0 or 2.")
 
+            []
             # compute hoi
             _, _hoi = jax.lax.scan(
                 compute_at, (x_c, y, ind, ind_red, atom), _h_idx
@@ -257,4 +289,19 @@ class atoms_phiID(HOIEstimator):
             # updates
             offset += n_combs
 
-        return np.asarray(hoi)
+        if matrix:
+            mat = np.zeros((n_f, n_f, n_var))
+
+            for i in range(n_var):
+                c = 0
+
+                for j in range(n_f):
+                    for k in np.arange(j + 1, 119):
+                        mat[j, k, i] = np.asarray(hoi)[c, i]
+                        c += 1
+
+                mat[:, :, i] = mat[:, :, i] + mat[:, :, i].T
+            return mat
+
+        else:
+            return np.asarray(hoi)
