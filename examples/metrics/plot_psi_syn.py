@@ -20,9 +20,8 @@ plt.style.use("ggplot")
 # Definition
 # ----------
 #
-# The synergy as defined in the Integrated Information decomposition framework
-# is a pairwise measure of the synergistic information that two variables
-# carry about their own future. For a couple of variables,
+# :math:`\psi` is a pairwise measure of the Integrated information. 
+# For a couple of variabless,
 # :math:`X` and  :math:`Y`, when using the minimum mutual information (MMI)
 # approximation for the redundancy, it is defined in the following way:
 
