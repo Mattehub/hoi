@@ -11,3 +11,5 @@ from .rsi import RSI  # noqa
 from .sinfo import Sinfo  # noqa
 from .syn_mmi import SynergyMMI  # noqa
 from .tc import TC  # noqa
+from .phiid_u_m_d import umd_phiID
+from .phi_o_grad import phi_Oinfo_grad
